@@ -34,7 +34,7 @@ public class Start {
 
         byte[][] decryptedTexts = Encryptor.decryptNumberOfCipherTexts(encryptedTexts, key);
 
-        /*String plainText = "Hello!!!";
+        /*String plainText = "Hello!!!лрлрлр";
         byte[] plaintTextBytes = plainText.getBytes();
 
         String key = "78yz889923479122314312";
