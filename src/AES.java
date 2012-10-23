@@ -10,6 +10,11 @@ public class AES {
     private static int Nb, Nk, Nr;
     private static byte[][] w;
 
+
+    public static byte[][] getLastKey(){
+        return w;
+    }
+
     private static int[] sbox = {0x63, 0x7C, 0x77, 0x7B, 0xF2, 0x6B, 0x6F,
             0xC5, 0x30, 0x01, 0x67, 0x2B, 0xFE, 0xD7, 0xAB, 0x76, 0xCA, 0x82,
             0xC9, 0x7D, 0xFA, 0x59, 0x47, 0xF0, 0xAD, 0xD4, 0xA2, 0xAF, 0x9C,
@@ -114,6 +119,7 @@ public class AES {
         }
 
         return tmp;
+
     }
 
     private static byte[] SubWord(byte[] in) {
@@ -143,7 +149,6 @@ public class AES {
             for (int l = 0; l < 4; l++)
                 tmp[l][c] = (byte) (state[l][c] ^ w[round * Nb + c][l]);
         }
-
         return tmp;
     }
 
@@ -163,6 +168,17 @@ public class AES {
                 state[row][col] = (byte) (inv_sbox[(state[row][col] & 0x000000ff)] & 0xff);
 
         return state;
+    }
+
+    public static byte SubByte(byte state) {
+
+        byte tmp;
+        tmp = (byte) (sbox[(state & 0x000000ff)] & 0xff);
+        return tmp;
+    }
+
+    public static byte InvSubByte(byte state) {
+        return (byte) (inv_sbox[(state & 0x000000ff)] & 0xff);
     }
 
     private static byte[][] ShiftRows(byte[][] state) {
@@ -247,15 +263,11 @@ public class AES {
             state = MixColumns(state);
             state = AddRoundKey(state, w, round);
         }
-        if(state[0][0] == 0){
-        for(byte[] b : state){
-            System.out.print(Arrays.toString(b));
-        }
-        System.out.println();   }
 
         state = SubBytes(state);
         state = ShiftRows(state);
         state = AddRoundKey(state, w, Nr);
+
 
         for (int i = 0; i < tmp.length; i++)
             tmp[i % 4 * 4 + i / 4] = state[i / 4][i % 4];

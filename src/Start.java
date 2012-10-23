@@ -9,9 +9,33 @@ public class Start {
 
     public static void main(String[] args) {
 
-        /*String[] plainTextsArray = StringGenerator.generatePlainTexts(1);*/
         String key = StringGenerator.generateKey();
-        /*for(String s : plainTextsArray){
+
+        byte[][] texts = StringGenerator.generate256Texts();
+
+        byte[][] encryptedTexts = Encryptor.encryptNumberOfPlainTexts(texts, key);
+
+        System.out.println(Arrays.deepToString(AES.getLastKey()));
+
+        byte[] result = new byte[256];
+        for(int i = 0; i < 256; i++){
+            result[i] = AES.InvSubByte((byte)(encryptedTexts[0][13]^(byte)i));
+            for(int j = 1; j < 256; j++){
+                result[i] = (byte)(AES.InvSubByte((byte)(encryptedTexts[j][13]^(byte)i))^result[i]);
+            }
+            if(result[i] == (byte)0){
+                System.out.println((byte)i);
+            }
+        }
+
+        System.out.println(Arrays.toString(result));
+
+        /*
+        FUCKING CODE!
+
+        System.out.println(Arrays.toString(key.getBytes()));
+
+        for(String s : plainTextsArray){
             System.out.println(s);
         }
 
@@ -26,15 +50,10 @@ public class Start {
         System.out.println();
         for(byte[] b : decryptedTexts){
             System.out.println(new String(b));
-        } */
+        }
 
-        byte[][] texts = StringGenerator.generate256Texts();
+        String plainText = "Hello!!!лрлрлр";
 
-        byte[][] encryptedTexts = Encryptor.encryptNumberOfPlainTexts(texts, key);
-
-        byte[][] decryptedTexts = Encryptor.decryptNumberOfCipherTexts(encryptedTexts, key);
-
-        /*String plainText = "Hello!!!лрлрлр";
         byte[] plaintTextBytes = plainText.getBytes();
 
         String key = "78yz889923479122314312";
@@ -46,7 +65,16 @@ public class Start {
 
         System.out.println(plainText);
         System.out.println(new String(encryptedTextBytes));
-        System.out.println(new String(decryptedTextBytes));*/
+        System.out.println(new String(decryptedTextBytes));
+
+        for (int i = 1; i < encryptedTexts.length; i++) {
+            for (int j = 0; j < encryptedTexts[0].length; j++) {
+                encryptedTexts[i][j] = (byte)(encryptedTexts[i][j] ^ encryptedTexts[i-1][j]);
+            }
+            //System.out.println(Arrays.toString(encryptedTexts[i]));
+        } */
+
+        //byte[][] decryptedTexts = Encryptor.decryptNumberOfCipherTexts(encryptedTexts, key);
 
     }
 

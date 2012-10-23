@@ -34,14 +34,14 @@ public class StringGenerator {
         Random random = new Random();
         byte[][] plainTexts = new byte[256][];
         plainTexts[0] = new byte[16];
-        plainTexts[0][0] = 0;
-        for(int i = 1; i < 16; i++){
+        for(int i = 0; i < 16; i++){
             plainTexts[0][i] = (byte)random.nextInt(256);
         }
+        plainTexts[0][13] = 0;
         for(int i = 1; i < 256; i++){
             plainTexts[i] = new byte[16];
             plainTexts[i] = plainTexts[0].clone();
-            plainTexts[i][0] = (byte)i;
+            plainTexts[i][13] = (byte)i;
         }
         return plainTexts;
     }

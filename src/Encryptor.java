@@ -28,7 +28,6 @@ public class Encryptor {
     public static byte[][] encryptNumberOfPlainTexts(byte[][] plainTextsArray, String key){
         byte[][] cipherTextsArray = new byte[plainTextsArray.length][];
         for(int i = 0; i < cipherTextsArray.length; i++){
-            System.out.println(i);
             cipherTextsArray[i] = encryptPlainText(plainTextsArray[i], key);
         }
         return cipherTextsArray;
