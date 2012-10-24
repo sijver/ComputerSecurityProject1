@@ -1,6 +1,8 @@
 import aes.AES;
 import aes.SquareAttack;
+import gui.MainFrame;
 
+import javax.swing.*;
 import java.util.Arrays;
 
 public class Start {
@@ -21,6 +23,8 @@ public class Start {
         }
 
         System.out.println(Arrays.deepToString(AES.getRoundKey(4)));
+
+        JFrame mainFrame = new MainFrame();
 
     }
 
