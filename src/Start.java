@@ -6,6 +6,7 @@ import java.util.Arrays;
 public class Start {
 
     public static void main(String[] args) {
+    	//Just a Commit Test with Eclipse 
 
         //This code will be deleted when the GUI will be made
         SquareAttack.generateKey();
