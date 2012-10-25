@@ -10,7 +10,7 @@ public class Start {
     public static void main(String[] args) {
 
         //This code will be deleted when the GUI will be made
-        SquareAttack.generateKey();
+        /*SquareAttack.generateKey();
 
         for (int i = 0; i < 16; i++) {
             byte[][] texts = SquareAttack.generate256Texts(i);
@@ -22,7 +22,7 @@ public class Start {
             System.out.println(rec);
         }
 
-        System.out.println(Arrays.deepToString(AES.getRoundKey(4)));
+        System.out.println(Arrays.deepToString(AES.getRoundKey(4))); */
 
         JFrame mainFrame = new MainFrame();
 

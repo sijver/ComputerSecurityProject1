@@ -1,5 +1,7 @@
 package aes;
 
+import gui.MainFrame;
+
 import java.util.Random;
 
 /**
@@ -13,7 +15,7 @@ public class SquareAttack {
      * @return Original AK0 key
      */
     public static byte[] getKey() {
-        return key.clone();
+        return key;
     }
 
     /**
@@ -23,9 +25,19 @@ public class SquareAttack {
      */
     public static void setKey(byte[] key) {
         SquareAttack.key = key.clone();
+        MainFrame.printToConsole("Chosen key:");
+        for(byte b : key){
+            MainFrame.printToConsole(" ".concat(MainFrame.byteToHex(b)));
+        }
+        MainFrame.printToConsole("\n");
     }
 
-    public static void generateKey() {
+    /**
+     * Generates 16-byte key
+     *
+     * @return 16-byte array with key
+     */
+    public static byte[] generateKey() {
         final int bitsInByte = 256;
         final int lengthOfKey = 16;
         Random random = new Random();
@@ -36,7 +48,7 @@ public class SquareAttack {
             generatedKey[i] = (byte) random.nextInt(bitsInByte);
         }
 
-        setKey(generatedKey);
+        return generatedKey;
     }
 
     /**
@@ -68,6 +80,7 @@ public class SquareAttack {
             plainTexts[i][activePosition] = (byte) i;
         }
 
+        MainFrame.printToConsole(String.format("256 texts with active position %1$d are generated\n", activePosition + 1));
         return plainTexts;
     }
 
@@ -85,6 +98,7 @@ public class SquareAttack {
             cipherTexts[i] = AES.encrypt(plainTexts[i], key);
         }
 
+        MainFrame.printToConsole("Plain texts are encrypted\n");
         return cipherTexts;
     }
 
@@ -102,6 +116,7 @@ public class SquareAttack {
             decryptedTexts[i] = AES.decrypt(cipherTexts[i], key);
         }
 
+        MainFrame.printToConsole("Plain texts are decrypted\n");
         return decryptedTexts;
     }
 
@@ -130,6 +145,7 @@ public class SquareAttack {
 
             if (bytesArray[i] == (byte) 0) {
                 keyByte = (byte) i;
+                MainFrame.printToConsole(String.format("%1$s byte is key candidate for position %2$d\n", MainFrame.byteToHex(keyByte), bytePosition));
                 keyByteCandidatesNum++;
             }
         }
@@ -138,6 +154,7 @@ public class SquareAttack {
         if (keyByteCandidatesNum == 1) {
             return keyByte;
         } else {
+            MainFrame.printToConsole("More than one candidate for key byte");
             return attackKeyByte(encryptTexts(generate256Texts(bytePosition)), bytePosition);
         }
     }
