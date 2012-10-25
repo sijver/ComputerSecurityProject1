@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<component inherit-compiler-output="true">
-	<output-test url="file://$MODULE_DIR$/out/test/ComputerSecurityProject1"/>
+<component>
+	<output-test url="file://$APPLICATION_HOME_DIR$/bin/src/test/ComputerSecurityProject1"/>
 	<exclude-output/>
 	<contentEntry url="file://$MODULE_DIR$"/>
 </component>
