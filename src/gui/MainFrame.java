@@ -83,13 +83,13 @@ public class MainFrame extends JFrame {
         JButton showOriginalKeyButton = new JButton();
         showOriginalKeyButton.setLocation(30, 200);
         showOriginalKeyButton.setSize(240, 40);
-        showOriginalKeyButton.setText("Show Original KA4 key");
+        showOriginalKeyButton.setText("Show Original AK4 key");
         showOriginalKeyButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 try {
                     byte[][] roundKey = AES.getRoundKey(4);
-                    printToConsole("KA4:");
+                    printToConsole("AK4:");
                     for (int i = 0; i < roundKey.length; i++) {
                         for (int j = 0; j < roundKey[i].length; j++) {
                             printToConsole(String.format(" %1$s", byteToHex(roundKey[i][j])));
@@ -97,7 +97,7 @@ public class MainFrame extends JFrame {
                     }
                     printToConsole("\n");
                 } catch (NullPointerException exc) {
-                    MainFrame.printToConsole("First make encryption and after try to get KA4 again\n");
+                    MainFrame.printToConsole("First make encryption and after try to get AK4 again\n");
                 }
 
             }
@@ -110,7 +110,7 @@ public class MainFrame extends JFrame {
         JLabel textLabel = new JLabel();
         textLabel.setLocation(15, 300);
         textLabel.setSize(270, 20);
-        textLabel.setText("Click button to recover appropriate byte of KA4");
+        textLabel.setText("Click button to recover appropriate byte of AK4");
         this.add(textLabel);
 
         for (int i = 0; i < 16; i++) {
@@ -127,7 +127,7 @@ public class MainFrame extends JFrame {
                     } else {
                         byte[][] plainTexts = SquareAttack.generate256Texts(activeByte);
                         byte[][] cipherTexts = SquareAttack.encryptTexts(plainTexts);
-                        byte recoveredByte = SquareAttack.attackKeyByte(cipherTexts, activeByte);
+                        byte recoveredByte = SquareAttack.attackKeyByte(cipherTexts, activeByte, null);
                         button.setText(byteToHex(recoveredByte));
                     }
                 }

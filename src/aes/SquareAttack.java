@@ -2,6 +2,7 @@ package aes;
 
 import gui.MainFrame;
 
+import java.util.ArrayList;
 import java.util.Random;
 
 /**
@@ -26,7 +27,7 @@ public class SquareAttack {
     public static void setKey(byte[] key) {
         SquareAttack.key = key.clone();
         MainFrame.printToConsole("Chosen key:");
-        for(byte b : key){
+        for (byte b : key) {
             MainFrame.printToConsole(" ".concat(MainFrame.byteToHex(b)));
         }
         MainFrame.printToConsole("\n");
@@ -125,18 +126,26 @@ public class SquareAttack {
      *
      * @param cipherTexts  Array of 256 cipher texts that are represented in form of 16-byte arrays
      * @param bytePosition Number of byte of key which attacked
+     * @param candidates List of candidates to be a byte of key AK4
      *
      * @return Recovered byte of key
      */
-    public static byte attackKeyByte(byte[][] cipherTexts, int bytePosition) {
+    public static byte attackKeyByte(byte[][] cipherTexts, int bytePosition, ArrayList<Byte> candidates) {
         final int numOfBytes = 256;
         byte keyByte = 0;
         int keyByteCandidatesNum = 0;
+        ArrayList<Byte> keyByteCandidates = new ArrayList<Byte>();
 
         byte[] bytesArray = new byte[numOfBytes];
 
         //For each 256 possible key values calculating xor of recovered 3rd round cipher texts
         for (int i = 0; i < 256; i++) {
+            //It's not sense to check bytes that are not in the list of candidates
+            if (candidates != null) {
+                while (!candidates.contains(Byte.valueOf((byte)i)) && i < 255) {
+                    i++;
+                }
+            }
             bytesArray[i] = AES.invSubByte((byte) (cipherTexts[0][bytePosition] ^ (byte) i));
             //Calculating xor for assumed byte of key (i)
             for (int j = 1; j < 256; j++) {
@@ -145,8 +154,9 @@ public class SquareAttack {
 
             if (bytesArray[i] == (byte) 0) {
                 keyByte = (byte) i;
-                MainFrame.printToConsole(String.format("%1$s byte is key candidate for position %2$d\n", MainFrame.byteToHex(keyByte), bytePosition));
+                MainFrame.printToConsole(String.format("%1$s byte is key candidate for position %2$d\n", MainFrame.byteToHex(keyByte), bytePosition + 1));
                 keyByteCandidatesNum++;
+                keyByteCandidates.add((byte) i);
             }
         }
 
@@ -155,7 +165,7 @@ public class SquareAttack {
             return keyByte;
         } else {
             MainFrame.printToConsole("More than one candidate for key byte");
-            return attackKeyByte(encryptTexts(generate256Texts(bytePosition)), bytePosition);
+            return attackKeyByte(encryptTexts(generate256Texts(bytePosition)), bytePosition, keyByteCandidates);
         }
     }
 
